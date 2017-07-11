@@ -1,0 +1,205 @@
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+
+\usetheme{Boadilla}
+\usecolortheme{seahorse}
+\usefonttheme{serif}
+\beamertemplatenavigationsymbolsempty
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\setbeamersize{description width=1cm}
+
+\usepackage{luacode}
+\usepackage{luatexja}
+\usepackage{pgfpages}
+
+\begin{luacode*}
+  USE_IPAFONT = os.getenv"USE_IPAFONT"
+  USE_YUFONT = os.getenv"USE_YUFONT"
+  
+  if USE_YUFONT == "true" then
+    tex.sprint("\\AtBeginDocument{\\usepackage[yu-osx, deluxe, expert]{luatexja-preset}}")
+  elseif USE_IPAFONT == "true" then
+    tex.sprint("\\AtBeginDocument{\\usepackage[ipaex, deluxe, expert]{luatexja-preset}}")
+  else
+    tex.sprint("\\AtBeginDocument{\\usepackage[hiragino-pro, deluxe, expert]{luatexja-preset}}")
+  end
+\end{luacode*}
+
+\usepackage{epigraph}
+\usepackage{etoolbox}
+\usepackage{tikz}
+\usepackage{framed}
+\usepackage{libertine}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{tikz-qtree}
+
+\renewcommand{\kanjifamilydefault}{\gtdefault}
+
+%\setbeameroption{show notes on second screen=right}
+
+\setmainfont[Ligatures=TeX]{Linux Libertine O}
+\setsansfont[Ligatures=TeX]{CMU Sans Serif}
+\setmonofont[Ligatures=TeX]{CMU Typewriter Text}
+
+\input{vc.tex}
+
+\title[公平なランサムウェア]{%
+  公平なランサムウェア \\
+  {\large The Fairest Ransomware}
+}
+\author[吉村 優]{%
+  吉村 優 \\
+  Hikaru \textsc{Yoshimura}
+}
+\date[June 24, 2017]{%
+  June 24, 2017 \\%
+  {\footnotesize (Commit ID: \GITAbrHash)}
+}
+\institute[株式会社ドワンゴ]{%
+  株式会社ドワンゴ \\
+   \href{mailto:yyu@mental.poker}{yyu@mental.poker}
+}
+
+\input{./lib/quotebox.tex}
+\input{./lib/footnotemark.tex}
+\input{./lib/ballon.tex}
+\input{./lib/listings_setting.tex}
+
+\newcommand\ballref[1]{%
+\tikz \node[circle, shade,ball color=structure.fg,inner sep=0pt,%
+  text width=8pt,font=\tiny,align=center] {\color{white}\ref{#1}};
+}
+
+\begin{document}
+
+\frame{\maketitle}
+
+\begin{frame}
+  \frametitle{目次}
+
+  \tableofcontents
+\end{frame}
+
+\section{自己紹介}
+\begin{frame}
+  \frametitle{自己紹介}
+  
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \centering
+      \begin{figure}
+        \includegraphics[width=0.95\textwidth]{img/bird2x.png}
+      \end{figure}
+
+      \begin{description}
+        \item[Twitter] \href{https://twitter.com/\_yyu\_}{@\_yyu\_}
+        \item[Qiita] \href{http://qiita.com/yyu}{yyu}
+        \item[GitHub] \href{https://github.com/y-yu}{y-yu}
+      \end{description}
+    \end{column}
+    \begin{column}{0.7\textwidth}
+      \begin{itemize}
+        \item<2-> 筑波大学 情報科学類卒（学士）
+        \item<3-> 株式会社ドワンゴ 入社
+        \item<4-> DCS部 認証基盤セクション
+        \item<5-> 暗号技術に興味があります
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{はじめに}
+
+\begin{frame}
+  \frametitle{はじめに}
+
+  \begin{itemize}
+    \item<2-> 最近は\textbf{ランサムウェア}が流行している
+  \end{itemize}
+
+  \uncover<3->{
+    \begin{block}{ランサムウェア}
+      被害者のコンピューター内のデータを暗号化して、
+      復号の対価としてBitcoinなどを支払わせるマルウェアのこと。
+    \end{block}
+  }
+
+  \uncover<4->{
+    \begin{exampleblock}{代表的なランサムウェア}
+      \begin{itemize}
+        \item WannaCry
+        \item Petya
+        \item GoldenEye 
+      \end{itemize}
+    \end{exampleblock}
+  }
+
+  \begin{center}
+    \uncover<5->{
+      \begin{tikzpicture}
+        \calloutquote[width=9cm,position={(0.7,-0.2)},fill=red!20,rounded corners]{Bitcoinを支払ったら本当に復号してくれるのか？}
+      \end{tikzpicture}
+    }
+  \end{center} 
+\end{frame}
+
+\section{定義と記法}
+
+\begin{frame}
+  \frametitle{公平なランサムウェア}
+
+  \uncover<2->{
+    \begin{shadequote}{}
+      Bitcoinを支払えば、元のデータが被害者の納得した確率で
+      復号されるランサムウェアのこと。
+    \end{shadequote}
+  }
+
+    \begin{center}
+    \uncover<3->{
+      \begin{tikzpicture}
+        \calloutquote[width=7cm,position={(0.7,-0.2)},fill=blue!20,rounded corners]{暗号技術を使えばできる}
+      \end{tikzpicture}
+    }
+  \end{center} 
+\end{frame}
+
+\newcommand{\Enc}[2]{\text{Enc}_{#1}\left(#2\right)}
+\newcommand{\Dec}[2]{\text{Dec}_{#1}\left(#2\right)}
+
+\begin{frame}
+  \frametitle{定義}
+
+  \begin{description}
+    \item<2->[対称鍵暗号] AESのような、
+    共通の\textbf{対称鍵}を利用して暗号化・復号を行う暗号方式のこと。
+    暗号化関数を$\text{Enc}$、復号関数を$\text{Dec}$とすると、次がなりたつ。
+    \[
+      x = \Dec{k}{\Enc{k}{x}}
+    \]
+    
+    \item<3->[RSA暗号] 暗号化に用いる\textbf{公開鍵}と
+    復号に用いる\textbf{秘密鍵}が異なる暗号方式のこと。
+    公開鍵$(e, N)$と秘密鍵$d$とすると、次がなりたつ。
+    \[
+      x = (x^e)^d = (x^d)^e \pmod{N}
+    \]
+
+    \item<4->[ゼロ知識証明] 証明者は証明したい命題以外の情報を
+    秘密にしたまま命題を証明できる
+    
+  \end{description}
+\end{frame}
+
+\begin{frame}
+  \centering
+  {\Huge Thank you for your attention!\\
+    \vspace{1em}
+    Any question?
+  }
+\end{frame}
+
+\end{document}
