@@ -46,21 +46,17 @@
 
 \input{vc.tex}
 
-\title[公平なランサムウェア]{%
-  公平なランサムウェア \\
-  {\large The Fairest Ransomware}
-}
-\author[吉村 優]{%
-  吉村 優 \\
+\title{The Fairest Ransomware}
+\author[Hikaru YOSHIMURA]{%
   Hikaru \textsc{Yoshimura}
 }
-\date[June 24, 2017]{%
-  June 24, 2017 \\%
+\date[June 31, 2017]{%
+  June 31, 2017 \\%
   {\footnotesize (Commit ID: \GITAbrHash)}
 }
-\institute[株式会社ドワンゴ]{%
-  株式会社ドワンゴ \\
-   \href{mailto:yyu@mental.poker}{yyu@mental.poker}
+\institute[DWANGO Co., LTD.]{%
+  DWANGO Co., Ltd.\\
+  \href{mailto:yyu@mental.poker}{yyu@mental.poker}
 }
 
 \input{./lib/quotebox.tex}
@@ -78,14 +74,14 @@
 \frame{\maketitle}
 
 \begin{frame}
-  \frametitle{目次}
+  \frametitle{Table of Contents}
 
   \tableofcontents
 \end{frame}
 
-\section{自己紹介}
+\section{Who am I?}
 \begin{frame}
-  \frametitle{自己紹介}
+  \frametitle{Who am I?}
   
   \begin{columns}
     \begin{column}{0.3\textwidth}
@@ -102,33 +98,33 @@
     \end{column}
     \begin{column}{0.7\textwidth}
       \begin{itemize}
-        \item<2-> 筑波大学 情報科学類卒（学士）
-        \item<3-> 株式会社ドワンゴ 入社
-        \item<4-> DCS部 認証基盤セクション
-        \item<5-> 暗号技術に興味があります
+        \item<2-> University of Tsukuba (Undergraduate)
+        \item<3-> Authentication Platform Section, DCS Dept
+        \item<4-> I'm interesting in Cryptography
       \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
 
-\section{はじめに}
+\section{Introduction}
 
 \begin{frame}
-  \frametitle{はじめに}
+  \frametitle{Introduction}
 
   \begin{itemize}
-    \item<2-> 最近は\textbf{ランサムウェア}が流行している
+    \item<2-> Recentry, \emph{Ransomwares} are being famous.
   \end{itemize}
 
   \uncover<3->{
-    \begin{block}{ランサムウェア}
-      被害者のコンピューター内のデータを暗号化して、
-      復号の対価としてBitcoinなどを支払わせるマルウェアのこと。
+    \begin{block}{Ransomware}
+      Ransomware is one of the malware that encrypts
+      the data of a victim's comptuer and then make
+      they pay ransom.
     \end{block}
   }
 
   \uncover<4->{
-    \begin{exampleblock}{代表的なランサムウェア}
+    \begin{exampleblock}{Famous Ransomwares}
       \begin{itemize}
         \item WannaCry
         \item Petya
@@ -140,28 +136,29 @@
   \begin{center}
     \uncover<5->{
       \begin{tikzpicture}
-        \calloutquote[width=9cm,position={(0.7,-0.2)},fill=red!20,rounded corners]{Bitcoinを支払ったら本当に復号してくれるのか？}
+        \calloutquote[width=11cm,position={(0.7,-0.2)},fill=red!20,rounded corners]{Will ransomwares decrypt the data if the victim pays Bitcoin?}
       \end{tikzpicture}
     }
   \end{center} 
 \end{frame}
 
-\section{定義と記法}
+\section{Definition and Notation}
 
 \begin{frame}
-  \frametitle{公平なランサムウェア}
+  \frametitle{The Fairnest Ransomware}
 
   \uncover<2->{
     \begin{shadequote}{}
-      Bitcoinを支払えば、元のデータが被害者の納得した確率で
-      復号されるランサムウェアのこと。
+      If the victim pays some Bitcoins,
+      their data will be decrypted under
+      the probability on which they agreed.
     \end{shadequote}
   }
 
     \begin{center}
     \uncover<3->{
       \begin{tikzpicture}
-        \calloutquote[width=7cm,position={(0.7,-0.2)},fill=blue!20,rounded corners]{暗号技術を使えばできる}
+        \calloutquote[width=8cm,position={(0.7,-0.2)},fill=blue!20,rounded corners]{It's possible using cryptography!}
       \end{tikzpicture}
     }
   \end{center} 
@@ -171,27 +168,83 @@
 \newcommand{\Dec}[2]{\text{Dec}_{#1}\left(#2\right)}
 
 \begin{frame}
-  \frametitle{定義}
+  \frametitle{Encryption}
 
   \begin{description}
-    \item<2->[対称鍵暗号] AESのような、
-    共通の\textbf{対称鍵}を利用して暗号化・復号を行う暗号方式のこと。
-    暗号化関数を$\text{Enc}$、復号関数を$\text{Dec}$とすると、次がなりたつ。
+    \item<2->[Symmetric Key Encryption (SKE)]
+    is a cryptographic scheme that uses the \emph{same} key to encrypt and
+    decrypt data like AES.
+    An encryption function is denoted $\text{Enc}$, a decryption function
+    is denoted $\text{Dec}$. The following equation holds for the symmetric key $k$.
     \[
       x = \Dec{k}{\Enc{k}{x}}
     \]
     
-    \item<3->[RSA暗号] 暗号化に用いる\textbf{公開鍵}と
-    復号に用いる\textbf{秘密鍵}が異なる暗号方式のこと。
-    公開鍵$(e, N)$と秘密鍵$d$とすると、次がなりたつ。
+    \item<3->[RSA Encryption]
+    is a cryptographic scheme that uses the \emph{different} keys between encrypting and
+    decrypting data. The key using encryption is called \emph{public key} and
+    The key using description is called \emph{secret key}.
+    The following holds for a public key $(e, N)$ and the secret key $d$.
     \[
       x = (x^e)^d = (x^d)^e \pmod{N}
     \]
-
-    \item<4->[ゼロ知識証明] 証明者は証明したい命題以外の情報を
-    秘密にしたまま命題を証明できる
-    
   \end{description}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Hash Function}
+
+  \uncover<2->{
+    \begin{block}{Hash Function}
+      A hash function $H$ is a \emph{one way function}, which means that:
+      \begin{itemize}
+        \item It's easy to calculate the output $H(x)$ from input $x$
+        \item But it's hard to calculate the input $x$ from output $H(x)$
+      \end{itemize}
+    \end{block}
+  }
+
+  \uncover<3->{
+    A hash function $H$ holds as follows:
+  }
+  
+  \begin{description}
+    \item<4->[Preimage Resistance] A hash value $h$,
+    it's difficult to find any message $m$ such that $h = H(m)$.
+
+    \item<4->[Second Preimage Resistance] An input $m_1$,
+    it's difficult to find different input $m_2$ such that $H(m_1) = H(m_2)$.
+
+    \item<4->[Collision resistance] It's difficult to find
+    two different messages $m_1$ and $m_2$ such that $H(m_1) = H(m_2)$.
+  \end{description}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Zero-Knowledge Proof}
+
+  \begin{description}
+    \item<2->[Prover Alice] has the secret key $d$ for
+    RSA chipher text $c$ encrypted by public key $(e, N)$.
+    And she has chipher text $s := \Enc{k}{c^d \bmod N}$ and
+    its symmetric key $k$.
+    
+    \item<3->[Verifier Bob] has the cipher text $c$,
+    its public key $(e, N)$ and the cipher text $s$.
+  \end{description}
+
+  \uncover<4->{
+    Bob want to verify as follows:
+    
+    \begin{shadequote}{}
+      A preimage of the hash value $H(k)$ is a symmetric key $k$ that
+      can decrypt SKE chipher text $s$.
+    \end{shadequote}
+
+    \begin{flushright}
+      without knowing the secret key $d$ or symmetric key $k$.
+    \end{flushright}
+  }
 \end{frame}
 
 \begin{frame}
