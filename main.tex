@@ -35,6 +35,7 @@
 \usepackage{mathtools}
 \usepackage{listings}
 \usepackage{tikz-qtree}
+\usepackage{cryptocode}
 
 \renewcommand{\kanjifamilydefault}{\gtdefault}
 
@@ -223,17 +224,21 @@
 \begin{frame}
   \frametitle{Zero-Knowledge Proof}
 
+  \uncover<2->{
+    There are two people, Alice and Bob.
+  }
+
   \begin{description}
-    \item<2->[Prover Alice] has the secret key $d$ for
+    \item<3->[Prover Alice] has the secret key $d$ for
     RSA chipher text $c$ encrypted by public key $(e, N)$.
     And she has chipher text $s := \Enc{k}{c^d \bmod N}$ and
     its symmetric key $k$.
     
-    \item<3->[Verifier Bob] has the cipher text $c$,
+    \item<4->[Verifier Bob] has the cipher text $c$,
     its public key $(e, N)$ and the cipher text $s$.
   \end{description}
 
-  \uncover<4->{
+  \uncover<5->{
     Bob want to verify as follows:
     
     \begin{shadequote}{}
@@ -247,6 +252,29 @@
   }
 \end{frame}
 
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\begin{frame}[fragile]
+  \frametitle{Zero-Knowledge Proof}
+
+  We use \emph{cut-and-choose protocol} where
+  RSA chipher text $c$ encrypted by public key $(e, N)$ and
+  its secret key $d$.
+
+  \uncover<2->{
+    \begin{center}
+    \pseudocode{%
+      \textbf{Alice} \< \< \textbf{Bob} \\[][\hline]
+      \text{$F := \{\sigma_j := (\rho_j)^e\}$ where $\rho_j \in \ZZ_N$} \< \< \\
+      \text{$R := \{d_i := c \cdot (r_i)^e\}$ where $r_i \in \ZZ_N$} \< \< \\
+      \text{$\beta = \{\sigma_1, \dots, \sigma_n, \d_1, \dots, \d_m\}$}
+      \< \sendmessageright{top=$\beta$} \< \\
+      \< \< \text{$f(\beta)$}\\
+      \text{finalize} \< \<}
+    \end{center}
+  }
+\end{frame}
+  
 \begin{frame}
   \centering
   {\Huge Thank you for your attention!\\
