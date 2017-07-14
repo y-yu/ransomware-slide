@@ -265,9 +265,10 @@
     \begin{center}
     \pseudocode{%
       \textbf{Alice} \< \< \textbf{Bob} \\[][\hline]
-      \text{$F := \{\sigma_j := (\rho_j)^e\}$ where $\rho_j \in \ZZ_N$} \< \< \\
-      \text{$R := \{d_i := c \cdot (r_i)^e\}$ where $r_i \in \ZZ_N$} \< \< \\
-      \text{$\beta = \{\sigma_1, \dots, \sigma_n, \d_1, \dots, \d_m\}$}
+      \text{$F := \{\sigma_1, \dots, \sigma_n\}$}\< \< \\
+      \text{$R := \{d_1, \dots, d_m\}$} \< \< \\
+      \text{$\beta$ is a random permutation} \< \< \\
+      \text{for $\{\sigma_1, \dots, \sigma_n, d_1, \dots, d_m\}$} \< \< \\
       \< \sendmessageright{top=$\beta$} \< \\
       \< \< \text{$f(\beta)$}\\
       \text{finalize} \< \<}
