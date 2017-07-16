@@ -1,28 +1,27 @@
 os:
   - linux
-  - osx
 dist: trusty
 sudo: false
 language: generic
 cache:
   directories:
-    - "$HOME/Library/texlive/2017basic/texmf-var/luatex-cache"
     - "$HOME/texlive/2017/texmf-var/luatex-cache"
 before_install:
   - wget https://raw.githubusercontent.com/y-yu/install-tex-travis/master/install-tex.sh
   - wget https://raw.githubusercontent.com/y-yu/install-tex-travis/master/tlmgr.sh
   - chmod +x install-tex.sh tlmgr.sh
 install:
+  - wget https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip
+  - unzip 1.050R-it.zip
+  - mkdir -p ~/.fonts
+  - cp source-code-pro-2.030R-ro-1.050R-it/OTF/*.otf ~/.fonts/
+  - fc-cache -f -v
   - . ./install-tex.sh
   - ./tlmgr.sh update --self --all || echo "ignore errors"
-  - ./tlmgr.sh install latexmk collection-luatex collection-langjapanese collection-fontsrecommended
-    filehook type1cm epigraph framed libertine cm-unicod everyhook svn-prov
+  - ./tlmgr.sh install latexmk collection-luatex collection-fontsrecommended
+    type1cm epigraph framed libertine cm-unicode everyhook svn-prov
 script:
-- if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-    USE_IPAFONT=true make all
-  else
-    make all
-  fi
+  - make all
 after_success:
   - ./deploy.sh
 env:

@@ -9,23 +9,7 @@
 \setbeamertemplate{bibliography item}{\insertbiblabel}
 \setbeamersize{description width=1cm}
 
-\usepackage{luacode}
-\usepackage{luatexja}
 \usepackage{pgfpages}
-
-\begin{luacode*}
-  USE_IPAFONT = os.getenv"USE_IPAFONT"
-  USE_YUFONT = os.getenv"USE_YUFONT"
-  
-  if USE_YUFONT == "true" then
-    tex.sprint("\\AtBeginDocument{\\usepackage[yu-osx, deluxe, expert]{luatexja-preset}}")
-  elseif USE_IPAFONT == "true" then
-    tex.sprint("\\AtBeginDocument{\\usepackage[ipaex, deluxe, expert]{luatexja-preset}}")
-  else
-    tex.sprint("\\AtBeginDocument{\\usepackage[hiragino-pro, deluxe, expert]{luatexja-preset}}")
-  end
-\end{luacode*}
-
 \usepackage{epigraph}
 \usepackage{etoolbox}
 \usepackage{tikz}
@@ -34,10 +18,6 @@
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{listings}
-\usepackage{tikz-qtree}
-\usepackage{cryptocode}
-
-\renewcommand{\kanjifamilydefault}{\gtdefault}
 
 %\setbeameroption{show notes on second screen=right}
 
@@ -261,19 +241,19 @@
   RSA chipher text $c$ encrypted by public key $(e, N)$ and
   its secret key $d$.
 
-  \uncover<2->{
-    \begin{center}
-    \pseudocode{%
-      \textbf{Alice} \< \< \textbf{Bob} \\[][\hline]
-      \text{$F := \{\sigma_1, \dots, \sigma_n\}$}\< \< \\
-      \text{$R := \{d_1, \dots, d_m\}$} \< \< \\
-      \text{$\beta$ is a random permutation} \< \< \\
-      \text{for $\{\sigma_1, \dots, \sigma_n, d_1, \dots, d_m\}$} \< \< \\
-      \< \sendmessageright{top=$\beta$} \< \\
-      \< \< \text{$f(\beta)$}\\
-      \text{finalize} \< \<}
-    \end{center}
-  }
+  %\uncover<2->{
+  %  \begin{center}
+  %  \pseudocode{%
+  %    \textbf{Alice} \< \< \textbf{Bob} \\[][\hline]
+  %    \text{$F := \{\sigma_1, \dots, \sigma_n\}$}\< \< \\
+  %    \text{$R := \{d_1, \dots, d_m\}$} \< \< \\
+  %    \text{$\beta$ is a random permutation} \< \< \\
+  %    \text{for $\{\sigma_1, \dots, \sigma_n, d_1, \dots, d_m\}$} \< \< \\
+  %    \< \sendmessageright{top=$\beta$} \< \\
+  %    \< \< \text{$f(\beta)$}\\
+  %    \text{finalize} \< \<}
+  %  \end{center}
+  %}
 \end{frame}
   
 \begin{frame}
