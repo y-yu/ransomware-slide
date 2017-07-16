@@ -3,6 +3,7 @@ os:
   - osx
 dist: trusty
 sudo: false
+language: generic
 cache:
   directories:
     - "$HOME/Library/texlive/2017basic/texmf-var/luatex-cache"
