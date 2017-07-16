@@ -12,7 +12,6 @@
 *.synctex.gz
 *.vrb
 *.out
-*.pdf
 *.bbl
 *.blg
 vc.tex

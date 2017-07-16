@@ -1,0 +1,29 @@
+os:
+  - linux
+  - osx
+dist: trusty
+sudo: false
+cache:
+  directories:
+    - "$HOME/Library/texlive/2017basic/texmf-var/luatex-cache"
+    - "$HOME/texlive/2017/texmf-var/luatex-cache"
+before_install:
+  - wget https://raw.githubusercontent.com/y-yu/install-tex-travis/master/install-tex.sh
+  - wget https://raw.githubusercontent.com/y-yu/install-tex-travis/master/tlmgr.sh
+  - chmod +x install-tex.sh tlmgr.sh
+install:
+  - . ./install-tex.sh
+  - ./tlmgr.sh update --self --all || echo "ignore errors"
+  - ./tlmgr.sh install latexmk collection-luatex collection-langjapanese collection-fontsrecommended
+    filehook type1cm epigraph framed libertine cm-unicod everyhook svn-prov
+script:
+- if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+    USE_IPAFONT=true make all
+  else
+    make all
+  fi
+after_success:
+  - ./deploy.sh
+env:
+  global:
+    secure: fuV9/VoEaWW4hhnXANv1IAupfb0j7SbuhQU+ZE7q4OOF6t0oilp2iAUMGMWKE0jQiwIeP1JyJ2HqKPwoSWzpTOlZ/yzo8Xl4I6QCgG1F3mXZ6WyDnCBxR0ZyYGGFMAzvMc/BQrJXGiqvbBK8/jmMWShenAER7nwdajY0E+f053gzmA3SxIogBxFEdPTkEJQJjnoxVX+SWENZ1Ndy8d9OXc9I3wOtOsimOjgFVFsAT8aASVQZMHbo35uNAL+zmoY1xe2Jt9g0BxWyVohlG9PPyE1XAasYvAqk/isB0LzI0NaFjBX66xjfdT6+4kMmbuJ7txp2zjCodUeeGjhvkQrcoLNyk1u4AFeS4JA2RMXbrj58+gy4jjNAG0rmnef2MPs4lzD7txlJLUWZNyCER259vmpT1NaewsK2CvlFD8krS5aKLRC6uS4uQJlcYAWQzggtrlqu8Y5Q22doJ3j15aOaaaS8viH5+iGTz5Tvr49QVsHKYFpv1/oe/9+bUrt34Jy0tf6ERbyqBGEg+AK1XIZvq586E6uGtQnoanb/FGKb1Q7Mu8nSFIZxbIbUBaUU09Es7d0N4yfCSl5OoxaLZ8fz5ND25jtxzgfOPaqYjCG18aD3sgeBLjvx1ioEs3c5K7rRSLBPve8NRHObFRxg1SeTuvlmmO6mLPxmwHDoZx58YWY=
