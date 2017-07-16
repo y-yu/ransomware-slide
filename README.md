@@ -1,6 +1,8 @@
 The Fairest Ransomware
 ============================
 
+[![Build Status](https://travis-ci.org/y-yu/ransomware-slide.svg?branch=master)](https://travis-ci.org/y-yu/ransomware-slide)
+
 ## Artifacts
 
 - [ransomware.pdf](http://www.yyu.pw/ransomware-slide/ransomware.pdf)
